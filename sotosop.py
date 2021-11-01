@@ -3,6 +3,7 @@ from tkinter import filedialog, NW
 from PIL import Image, ImageTk
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 
 class App:
     def __init__(self, parent, winTitle, winSize):
@@ -34,6 +35,9 @@ class App:
         self.editMenu.add_cascade(label="Sampling", command=self.downSampling)
         self.editMenu.add_cascade(label="Quantization", command=self.quantization)
         self.editMenu.add_cascade(label="Intensity", menu=self.intensityMenu)
+        self.editMenu.add_cascade(label="Negative", command=self.negativeImg)
+        self.editMenu.add_cascade(label="Histogram", command=self.showHistogram)
+        self.editMenu.add_cascade(label="Equalization", command=self.equalizeHistogram)
         
         self.primitiveMenu.add_cascade(label="Red", menu=self.redMenu)
         self.primitiveMenu.add_cascade(label="Green", menu=self.greenMenu)
@@ -114,7 +118,7 @@ class App:
                 for k in range(3):  #  Correspondence BGR Three channels 
                     if self.editedImg[i, j][k] < 128:
                         gray = 0
-                    else:
+                    else:   
                         gray = 129
                     new_img[i, j][k] = np.uint8(gray)
         self.editedImg = new_img
@@ -142,6 +146,21 @@ class App:
 
         final_hsv = cv2.merge((h, s, v))
         self.editedImg = cv2.cvtColor(final_hsv, cv2.COLOR_HSV2BGR)
+        self.displayOnRightPanel(self.editedImg)
+
+    def negativeImg(self):
+        self.editedImg = cv2.bitwise_not(self.editedImg)
+        self.displayOnRightPanel(self.editedImg)
+
+    def showHistogram(self):
+        for i, col in enumerate(['b', 'g', 'r']):
+            hist = cv2.calcHist([self.editedImg], [i], None, [256], [0, 256])
+            plt.plot(hist, color = col)
+            plt.xlim([0, 256])  
+        plt.show()
+
+    def equalizeHistogram(self):
+        self.editedImg = cv2.equalizeHist(self.editedImg)
         self.displayOnRightPanel(self.editedImg)
 
     def resetEditedImg(self):
