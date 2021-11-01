@@ -102,7 +102,7 @@ class App:
             self.containerRight.image = self.photo
             self.histogramCanvas.get_tk_widget().grid_forget()
             subplot = 221
-            self.histogramFigure = plt.Figure(figsize=(3, 3), dpi=100)
+            self.histogramFigure = plt.Figure(figsize=(5,5), dpi=100)
             for i, color in enumerate(['r', 'g', 'b']):
                 self.histogramFigure.add_subplot(subplot).plot(cv2.calcHist(
                     [self.editedImg], [i], None, [256], [0, 256]), color=color)
@@ -117,11 +117,11 @@ class App:
             self.containerRight = Label(self.window, image=self.photo)
             self.containerRight.image = self.photo
             self.containerRight.grid(row=0, column=1, sticky=NW)
-            self.histogramFigure = plt.figure(figsize=(3, 3), dpi=100)
+            self.histogramFigure = plt.figure(figsize=(5,5), dpi=100)
             self.histogramCanvas = FigureCanvasTkAgg(
                 self.histogramFigure, self.window)
             subplot = 221
-            self.histogramFigure = plt.figure(figsize=(3, 3), dpi=100)
+            self.histogramFigure = plt.figure(figsize=(5,5), dpi=100)
             for i, color in enumerate(['r', 'g', 'b']):
                 self.histogramFigure.add_subplot(subplot).plot(cv2.calcHist(
                     [self.editedImg], [i], None, [256], [0, 256]), color=color)
@@ -133,7 +133,7 @@ class App:
     def setHistogram(self, img):
         self.histogramCanvas.get_tk_widget().grid_forget()
         subplot = 221
-        self.histogramFigure = plt.Figure(figsize=(3, 3), dpi=100)
+        self.histogramFigure = plt.Figure(figsize=(5,5), dpi=100)
         for i, color in enumerate(['r', 'g', 'b']):
             self.histogramFigure.add_subplot(subplot).plot(cv2.calcHist(
                 [img], [i], None, [256], [0, 256]), color=color)
