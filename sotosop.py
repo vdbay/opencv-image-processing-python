@@ -56,19 +56,19 @@ class App:
             label="Intensity -", command=self.decrease_brightness)
 
         self.redMenu.add_cascade(
-            label="Red +", command=lambda: self.addColorValue(0, 10))
+            label="Red +", command=lambda: self.addColorValue(0, 20))
         self.redMenu.add_cascade(
-            label="Red -", command=lambda: self.subsColorValue(0, 10))
+            label="Red -", command=lambda: self.subsColorValue(0, 20))
 
         self.greenMenu.add_cascade(
-            label="Green +", command=lambda: self.addColorValue(1, 10))
+            label="Green +", command=lambda: self.addColorValue(1, 20))
         self.greenMenu.add_cascade(
-            label="Green -", command=lambda: self.subsColorValue(1, 10))
+            label="Green -", command=lambda: self.subsColorValue(1, 20))
 
         self.blueMenu.add_cascade(
-            label="Blue +", command=lambda: self.addColorValue(2, 10))
+            label="Blue +", command=lambda: self.addColorValue(2, 20))
         self.blueMenu.add_cascade(
-            label="Blue -", command=lambda: self.subsColorValue(2, 10))
+            label="Blue -", command=lambda: self.subsColorValue(2, 20))
 
         self.filterMenu.add_cascade(
             label="LowPass", command=self.lowPassFilter)
@@ -83,7 +83,7 @@ class App:
 
     def openFile(self):
         fileDir = filedialog.askopenfilename(title='Open an image', filetypes=[(
-            'Image files', '*.jpg *.jpeg *.png *.bmp *.tiff *.svg *.gif')])
+            'Image files (.jpg, .jpeg, .png, .bmp, .tiff, .svg, .gif)', '*.jpg *.jpeg *.png *.bmp *.tiff *.svg *.gif')])
         return fileDir
 
     def open_Image(self,  size=[450, 450]):
@@ -236,22 +236,25 @@ class App:
         self.setHistogram(self.editedImg)
 
     def highPassFilter(self):
-        kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
+        kernel = np.array([[0.0, -1.0, 0.0], 
+                      [-1.0, 4.0, -1.0],
+                      [0.0, -1.0, 0.0]])
         kernel = kernel/(np.sum(kernel) if np.sum(kernel) != 0 else 1)
         self.editedImg = cv2.filter2D(self.editedImg, -1, kernel)
         self.displayOnRightPanel(self.editedImg)
         self.setHistogram(self.editedImg)
 
     def bandPassFilter(self):
-        kernel = np.array([[-1, -1, -1], [-1, 5, -1], [-1, -1, -1]])
+        kernel = np.array([[0, -1, 0], 
+                      [-1, 5, -1],
+                      [0, -1, 0]])
         kernel = kernel/(np.sum(kernel) if np.sum(kernel) != 0 else 1)
         self.editedImg = cv2.filter2D(self.editedImg, -1, kernel)
         self.displayOnRightPanel(self.editedImg)
         self.setHistogram(self.editedImg)
 
     def resetEditedImg(self):
-        self.editedImg = cv2.cvtColor(cv2.imread(
-            self.currentFileDir), cv2.COLOR_BGR2RGB)
+        self.editedImg = cv2.cvtColor(cv2.imread(self.currentFileDir), cv2.COLOR_BGR2RGB)
         self.displayOnRightPanel(self.editedImg)
         self.setHistogram(self.editedImg)
 
